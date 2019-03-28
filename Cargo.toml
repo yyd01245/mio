@@ -1,14 +1,8 @@
 [package]
-
-name          = "mio"
-# When releasing to crates.io:
-# - Update html_root_url.
-# - Update CHANGELOG.md.
-# - Update doc URL.
-# - Create git tag
-version       = "0.6.16"
-license       = "MIT"
-authors       = ["Carl Lerche <me@carllerche.com>"]
+name = "mio_icmp"
+version = "0.1.0"
+authors = ["yandong.yan <yandong.yan@upai.com>"]
+# edition = "2018"
 description   = "Lightweight non-blocking IO"
 documentation = "https://docs.rs/mio/0.6.16/mio/"
 homepage      = "https://github.com/carllerche/mio"
@@ -21,6 +15,8 @@ exclude       = [
   ".travis.yml",
   "deploy.sh",
 ]
+build = "build.rs"
+
 
 [features]
 with-deprecated = []
@@ -52,3 +48,8 @@ bytes      = "0.3.0"
 [[test]]
 name = "test"
 path = "test/mod.rs"
+
+
+
+[build-dependencies]
+cc = "1.0"

@@ -171,6 +171,8 @@ pub mod tcp {
 #[doc(hidden)]
 pub mod udp;
 
+pub mod icmp;
+
 pub use poll::{
     Poll,
     Registration,

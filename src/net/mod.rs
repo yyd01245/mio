@@ -9,6 +9,8 @@
 
 mod tcp;
 mod udp;
+mod icmp;
 
 pub use self::tcp::{TcpListener, TcpStream};
 pub use self::udp::UdpSocket;
+pub use self::icmp::IcmpSocket;

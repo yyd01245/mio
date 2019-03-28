@@ -25,6 +25,9 @@ mod io;
 mod ready;
 mod tcp;
 mod udp;
+mod icmp;
+mod compat;
+pub mod net_icmp;
 
 #[cfg(feature = "with-deprecated")]
 mod uds;
@@ -35,6 +38,7 @@ pub use self::io::{Io, set_nonblock};
 pub use self::ready::{UnixReady, READY_ALL};
 pub use self::tcp::{TcpStream, TcpListener};
 pub use self::udp::UdpSocket;
+pub use self::icmp::IcmpSocket;
 
 #[cfg(feature = "with-deprecated")]
 pub use self::uds::UnixSocket;
