@@ -121,7 +121,7 @@ pub fn ioctl<T>(sock: &IcmpSocket, opt: c::c_ulong,  payload: T) -> io::Result<(
         #[cfg(target_env = "musl")]
         cvt(c::ioctl(*sock.as_inner(), opt as c::c_int,  payload))?;
         #[cfg(target_env = "gnu")]
-        cvt(c::ioctl(*sock.as_inner(), opt as c::u_long,  payload))?;
+        cvt(c::ioctl(*sock.as_inner(), opt as c::c_ulong,  payload))?;
         
         Ok(())
     }
