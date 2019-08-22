@@ -62,6 +62,9 @@ impl UdpSocket {
     pub fn set_broadcast(&self, on: bool) -> io::Result<()> {
         self.io.set_broadcast(on)
     }
+    pub fn set_multi_device(&self, on: bool,link: &str) -> io::Result<()> {
+        Ok(())
+    }
 
     pub fn multicast_loop_v4(&self) -> io::Result<bool> {
         self.io.multicast_loop_v4()

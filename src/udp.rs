@@ -144,7 +144,9 @@ impl UdpSocket {
     pub fn set_broadcast(&self, on: bool) -> io::Result<()> {
         self.sys.set_broadcast(on)
     }
-
+    pub fn set_multi_device(&self, on: bool,link: &str) -> io::Result<()> {
+        self.sys.set_multi_device(on,link)
+    }
     /// Gets the value of the `IP_MULTICAST_LOOP` option for this socket.
     ///
     /// For more information about this option, see

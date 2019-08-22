@@ -16,6 +16,10 @@ use std::net::{self, Ipv4Addr, Ipv6Addr, SocketAddr};
 #[cfg(all(unix, not(target_os = "fuchsia")))]
 use iovec::IoVec;
 
+use libc as c;
+use std::ffi::CString;
+use std::mem;
+
 /// A User Datagram Protocol socket.
 ///
 /// This is an implementation of a bound UDP socket. This supports both IPv4 and
@@ -92,6 +96,28 @@ use iovec::IoVec;
 pub struct UdpSocket {
     sys: sys::UdpSocket,
     selector_id: SelectorId,
+}
+
+pub trait IsMinusOne {
+    fn is_minus_one(&self) -> bool;
+}
+
+macro_rules! impl_is_minus_one {
+    ($($t:ident)*) => ($(impl IsMinusOne for $t {
+        fn is_minus_one(&self) -> bool {
+            *self == -1
+        }
+    })*)
+}
+
+impl_is_minus_one! { i8 i16 i32 i64 isize }
+
+pub fn cvt<T: IsMinusOne>(t: T) -> io::Result<T> {
+    if t.is_minus_one() {
+        Err(io::Error::last_os_error())
+    } else {
+        Ok(t)
+    }
 }
 
 impl UdpSocket {
@@ -321,6 +347,25 @@ impl UdpSocket {
         self.sys.set_broadcast(on)
     }
 
+    pub fn set_multi_device(&self, on: bool,link: &str) -> io::Result<()> {
+        unsafe {
+            let fd = self.sys.as_raw_fd();
+
+            // let payload = &payload as *const T as *const c::c_void;
+            cvt(c::setsockopt(fd, c::SOL_SOCKET, c::SO_BINDTODEVICE,
+                            CString::new(link).expect("device name").as_ptr() as *const c::c_void,
+                            mem::size_of::<CString>() as c::socklen_t))?;
+        }
+        Ok(())
+        // check_os_error(c::setsockopt(
+        //     fd,
+        //     c::SOL_SOCKET,
+        //     c::SO_BINDTODEVICE,
+        //     CString::new(link).expect("device name").as_ptr() as *const c::c_void,
+        //     mem::size_of::<CString>() as c::socklen_t,
+        // ))?;
+        // self.sys.set_broadcast(on)
+    }
     /// Gets the value of the `SO_BROADCAST` option for this socket.
     ///
     /// For more information about this option, see
