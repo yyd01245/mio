@@ -80,6 +80,14 @@ impl UdpSocket {
         self.sys.send_to(buf, target).map_non_block()
     }
 
+    /// Sends data on the socket to the given address. On success, returns the
+    /// number of bytes written.
+    ///
+    /// Address type can be any implementor of `ToSocketAddrs` trait. See its
+    /// documentation for concrete examples.
+    // pub fn shutdown(&self) -> io::Result<usize> {
+    //     self.sys.shutdown()
+    // }
     /// Receives data from the socket and stores data in the supplied buffer `buf`. On success,
     /// returns the number of bytes read and the address from whence the data came.
     ///

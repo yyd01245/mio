@@ -115,13 +115,13 @@ pub fn setsockopt<T>(sock: &IcmpSocket, opt: c::c_int, val: c::c_int, payload: T
 
 pub fn ioctl<T>(sock: &IcmpSocket, opt: c::c_ulong,  payload: T) -> io::Result<()> {
 
-    let _env = env::var("CARGO_CFG_TARGET_ENV").unwrap();
+    // let _env = env::var("CARGO_CFG_TARGET_ENV").unwrap();
     unsafe {
         let payload = &payload as *const T as *const c::c_void;
         #[cfg(target_env = "musl")]
         cvt(c::ioctl(*sock.as_inner(), opt as c::c_int,  payload))?;
         #[cfg(target_env = "gnu")]
-        cvt(c::ioctl(*sock.as_inner(), opt as c::c_ulong,  payload))?;
+        cvt(c::ioctl(*sock.as_inner(), opt as c::u_long,  payload))?;
         
         Ok(())
     }

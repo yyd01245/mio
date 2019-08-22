@@ -21,6 +21,7 @@ build = "build.rs"
 [features]
 with-deprecated = []
 default = ["with-deprecated"]
+self_musl = []
 
 [dependencies]
 log      = "0.4"

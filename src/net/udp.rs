@@ -237,6 +237,37 @@ impl UdpSocket {
         self.sys.send_to(buf, target)
     }
 
+    /// shutdown the socket to the given address. On success, returns the
+    /// number of bytes written.
+    ///
+    /// Address type can be any implementor of `ToSocketAddrs` trait. See its
+    /// documentation for concrete examples.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// # use std::error::Error;
+    /// # fn try_main() -> Result<(), Box<Error>> {
+    /// use mio::net::UdpSocket;
+    ///
+    /// let socket = UdpSocket::bind(&"127.0.0.1:0".parse()?)?;
+    ///
+    /// // We must check if the socket is writable before calling send_to,
+    /// // or we could run into a WouldBlock error.
+    ///
+    /// let bytes_sent = socket.send_to(&[9; 9], &"127.0.0.1:11100".parse()?)?;
+    /// assert_eq!(bytes_sent, 9);
+    /// #
+    /// #    Ok(())
+    /// # }
+    /// #
+    /// # fn main() {
+    /// #   try_main().unwrap();
+    /// # }
+    /// ```
+    // pub fn shutdown(&self) -> io::Result<usize> {
+    //     self.sys.shutdown()
+    // }
     /// Receives data from the socket. On success, returns the number of bytes
     /// read and the address from whence the data came.
     ///
