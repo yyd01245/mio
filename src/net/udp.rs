@@ -346,7 +346,7 @@ impl UdpSocket {
     pub fn set_broadcast(&self, on: bool) -> io::Result<()> {
         self.sys.set_broadcast(on)
     }
-
+    #[cfg(target_os = "linux")]
     pub fn set_multi_device(&self, on: bool,link: &str) -> io::Result<()> {
         unsafe {
             let fd = self.sys.as_raw_fd();
